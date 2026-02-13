@@ -1,96 +1,122 @@
--- Dark Hub | Painel Mobile
--- Feito para Delta / Mobile
+-- PAINEL SIMPLES FUNCIONAL
+-- Uso educacional / jogo próprio
+-- GitHub Ready
 
-local player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 
--- Evitar duplicar GUI
-if player.PlayerGui:FindFirstChild("DarkHub") then
-    player.PlayerGui.DarkHub:Destroy()
+-- CONFIG
+local SENHA = "key321789"
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PainelGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- TELA DE LOGIN
+local LoginFrame = Instance.new("Frame", ScreenGui)
+LoginFrame.Size = UDim2.new(0,300,0,180)
+LoginFrame.Position = UDim2.new(0.5,-150,0.5,-90)
+LoginFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+LoginFrame.Active = true
+LoginFrame.Draggable = true
+
+local Title = Instance.new("TextLabel", LoginFrame)
+Title.Size = UDim2.new(1,0,0,40)
+Title.Text = "LOGIN"
+Title.TextColor3 = Color3.new(1,1,1)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 22
+
+local TextBox = Instance.new("TextBox", LoginFrame)
+TextBox.Size = UDim2.new(0,240,0,35)
+TextBox.Position = UDim2.new(0.5,-120,0,60)
+TextBox.PlaceholderText = "Digite a senha"
+TextBox.Text = ""
+TextBox.BackgroundColor3 = Color3.fromRGB(40,40,40)
+TextBox.TextColor3 = Color3.new(1,1,1)
+TextBox.ClearTextOnFocus = false
+
+local LoginButton = Instance.new("TextButton", LoginFrame)
+LoginButton.Size = UDim2.new(0,240,0,35)
+LoginButton.Position = UDim2.new(0.5,-120,0,110)
+LoginButton.Text = "ENTRAR"
+LoginButton.BackgroundColor3 = Color3.fromRGB(70,70,70)
+LoginButton.TextColor3 = Color3.new(1,1,1)
+
+-- PAINEL PRINCIPAL
+local Panel = Instance.new("Frame", ScreenGui)
+Panel.Size = UDim2.new(0,350,0,250)
+Panel.Position = UDim2.new(0.5,-175,0.5,-125)
+Panel.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Panel.Visible = false
+Panel.Active = true
+Panel.Draggable = true
+
+local PanelTitle = Instance.new("TextLabel", Panel)
+PanelTitle.Size = UDim2.new(1,0,0,40)
+PanelTitle.Text = "PAINEL FUNCIONAL"
+PanelTitle.TextColor3 = Color3.new(1,1,1)
+PanelTitle.BackgroundTransparency = 1
+PanelTitle.Font = Enum.Font.SourceSansBold
+PanelTitle.TextSize = 22
+
+-- BOTÃO SPEED
+local SpeedBtn = Instance.new("TextButton", Panel)
+SpeedBtn.Size = UDim2.new(0,280,0,40)
+SpeedBtn.Position = UDim2.new(0.5,-140,0,60)
+SpeedBtn.Text = "SPEED ON / OFF"
+SpeedBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+SpeedBtn.TextColor3 = Color3.new(1,1,1)
+
+-- BOTÃO PULO
+local JumpBtn = Instance.new("TextButton", Panel)
+JumpBtn.Size = UDim2.new(0,280,0,40)
+JumpBtn.Position = UDim2.new(0.5,-140,0,110)
+JumpBtn.Text = "PULO ALTO"
+JumpBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+JumpBtn.TextColor3 = Color3.new(1,1,1)
+
+-- BOTÃO FECHAR
+local CloseBtn = Instance.new("TextButton", Panel)
+CloseBtn.Size = UDim2.new(0,280,0,40)
+CloseBtn.Position = UDim2.new(0.5,-140,0,160)
+CloseBtn.Text = "FECHAR"
+CloseBtn.BackgroundColor3 = Color3.fromRGB(120,50,50)
+CloseBtn.TextColor3 = Color3.new(1,1,1)
+
+-- FUNÇÕES
+local speedOn = false
+
+local function getHumanoid()
+	local char = player.Character or player.CharacterAdded:Wait()
+	return char:WaitForChild("Humanoid")
 end
 
--- ScreenGui
-local gui = Instance.new("ScreenGui")
-gui.Name = "DarkHub"
-gui.Parent = player.PlayerGui
-gui.ResetOnSpawn = false
-
--- Botão flutuante (toggle)
-local toggle = Instance.new("TextButton")
-toggle.Parent = gui
-toggle.Size = UDim2.new(0,50,0,50)
-toggle.Position = UDim2.new(0.85,0,0.6,0)
-toggle.Text = "≡"
-toggle.Font = Enum.Font.GothamBold
-toggle.TextSize = 22
-toggle.TextColor3 = Color3.fromRGB(255,255,255)
-toggle.BackgroundColor3 = Color3.fromRGB(20,20,20)
-toggle.BorderSizePixel = 0
-toggle.Active = true
-toggle.Draggable = true
-Instance.new("UICorner", toggle).CornerRadius = UDim.new(1,0)
-
--- Painel principal
-local frame = Instance.new("Frame")
-frame.Parent = gui
-frame.Size = UDim2.new(0,240,0,220)
-frame.Position = UDim2.new(0.5,-120,0.5,-110)
-frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
-frame.BorderSizePixel = 0
-frame.Visible = false
-frame.Active = true
-frame.Draggable = true
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
-
--- Título
-local title = Instance.new("TextLabel")
-title.Parent = frame
-title.Size = UDim2.new(1,0,0,35)
-title.BackgroundTransparency = 1
-title.Text = "Dark Hub | Mobile"
-title.Font = Enum.Font.GothamBold
-title.TextSize = 14
-title.TextColor3 = Color3.fromRGB(255,255,255)
-
--- Layout
-local layout = Instance.new("UIListLayout")
-layout.Parent = frame
-layout.Padding = UDim.new(0,10)
-layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-
--- Função criar botão
-local function criarBotao(texto, callback)
-    local btn = Instance.new("TextButton")
-    btn.Parent = frame
-    btn.Size = UDim2.new(1,-20,0,42)
-    btn.Text = texto
-    btn.Font = Enum.Font.Gotham
-    btn.TextSize = 14
-    btn.TextColor3 = Color3.fromRGB(255,255,255)
-    btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-    btn.BorderSizePixel = 0
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0,8)
-    btn.MouseButton1Click:Connect(callback)
-end
-
--- BOTÕES (você pode trocar depois pelos seus scripts)
-criarBotao("Infinite Yield", function()
-    print("Infinite Yield clicado")
-    -- loadstring(game:HttpGet("LINK_RAW_DO_IY"))()
+SpeedBtn.MouseButton1Click:Connect(function()
+	local hum = getHumanoid()
+	speedOn = not speedOn
+	hum.WalkSpeed = speedOn and 50 or 16
 end)
 
-criarBotao("Fly", function()
-    print("Fly clicado")
-    -- loadstring(game:HttpGet("LINK_RAW_DO_FLY"))()
+JumpBtn.MouseButton1Click:Connect(function()
+	local hum = getHumanoid()
+	hum.JumpPower = 100
 end)
 
-criarBotao("Meu Script", function()
-    print("Meu script clicado")
-    -- loadstring(game:HttpGet("LINK_DO_SEU_SCRIPT"))()
+CloseBtn.MouseButton1Click:Connect(function()
+	Panel.Visible = false
+	LoginFrame.Visible = true
 end)
 
--- Toggle abrir / fechar
-toggle.MouseButton1Click:Connect(function()
-    frame.Visible = not frame.Visible
+LoginButton.MouseButton1Click:Connect(function()
+	if TextBox.Text == SENHA then
+		LoginFrame.Visible = false
+		Panel.Visible = true
+	else
+		TextBox.Text = ""
+		TextBox.PlaceholderText = "Senha incorreta"
+	end
 end)
-
-print("Dark Hub carregado com sucesso!")
